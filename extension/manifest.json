@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "PDM Schedule \u2192 Calendar",
+  "version": "1.0.0",
+  "description": "Unofficial local-only Penn Dental schedule exporter with customizable emoji-coded events and one-file ICS export.",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://inside.apps.dental.upenn.edu/*"
+  ],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Export PDM schedule",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://inside.apps.dental.upenn.edu/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}

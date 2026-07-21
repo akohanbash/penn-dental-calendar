@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <section id="termsGate" hidden>
+    <div class="unofficial-banner">UNOFFICIAL STUDENT TOOL — NOT AFFILIATED WITH PENN OR PENN DENTAL MEDICINE</div>
+    <div class="hero compact-hero">
+      <div class="app-icon">🗓️</div>
+      <div><h1>Terms of Use</h1><p>You must accept these terms before continuing.</p></div>
+    </div>
+
+    <div class="terms-box" tabindex="0">
+      <h2>Important schedule notice</h2>
+      <p>This extension is provided only as a convenience for exporting schedule information into a personal calendar. Penn Dental schedules may be added, removed, corrected, rescheduled, or otherwise changed after export.</p>
+      <p><strong>Your personal calendar is not the official schedule.</strong> You are responsible for checking the official Penn Dental schedule page periodically and before every class, exam, quiz, lab, seminar, or other required activity.</p>
+      <h2>No affiliation</h2>
+      <p>This is an independent, unofficial student-created extension. It is not produced, sponsored, or maintained by the University of Pennsylvania or Penn Dental Medicine.</p>
+      <h2>No guarantee</h2>
+      <p>The extension is provided “as is” without any guarantee that exported information will be complete, current, accurate, compatible, or error-free. Calendar apps may also display or import information differently.</p>
+      <h2>Responsibility</h2>
+      <p>The developer is not responsible for schedule changes, missed classes or assessments, incorrect or missing events, import problems, reminder failures, calendar conflicts, academic consequences, or any other loss resulting from use of or reliance on this extension.</p>
+      <h2>Permitted use</h2>
+      <p>Use the extension only to export schedule information that you are authorized to view. Do not use it to access another person’s account or data, interfere with Penn systems, redistribute or sell modified copies, or represent the extension as an official Penn product.</p>
+      <h2>Privacy</h2>
+      <p>The extension processes schedule data locally in your browser and creates an ICS file. It does not require your Penn password and does not send your schedule to an outside server.</p>
+      <h2>Changes and availability</h2>
+      <p>The extension may be changed, suspended, or discontinued at any time. Continued use after updated terms are presented requires acceptance of the updated terms.</p>
+    </div>
+
+    <label class="terms-check glass-card">
+      <input id="agreeTerms" type="checkbox" />
+      <span>I have read and agree to the Terms of Use. I understand that this is an unofficial tool and that I must verify my schedule through Penn Dental’s official schedule page.</span>
+    </label>
+    <button id="acceptTerms" class="primary" disabled>Accept and Continue</button>
+  </section>
+
+  <section id="app" hidden>
+    <div class="unofficial-banner compact">UNOFFICIAL — NOT A PENN OR PENN DENTAL MEDICINE EXTENSION</div>
+
+    <!-- MAIN VIEW -->
+    <div id="mainView">
+      <div class="hero">
+        <div class="app-icon">🗓️</div>
+        <div class="hero-copy">
+          <h1>Penn Dental Calendar</h1>
+          <p>One file. Your schedule. Your emojis.</p>
+        </div>
+      </div>
+
+      <div class="notice-card">
+        <span class="notice-icon">⚠️</span>
+        <span><strong>Always verify your schedule on Penn’s official page.</strong> Exported calendars do not update automatically.</span>
+      </div>
+
+      <div id="loading" class="status loading-card"><span class="spinner"></span> Reading your schedule…</div>
+
+      <div id="ui" hidden>
+        <section class="glass-card basic-card">
+          <label class="field-label" for="calendarName">Calendar name</label>
+          <input id="calendarName" class="wide-input" value="Penn Dental" autocomplete="off" />
+
+          <label class="switch-row">
+            <span><strong>Future events only</strong><small>Skip schedule entries that already happened</small></span>
+            <input id="futureOnly" class="switch-input" type="checkbox" checked />
+            <span class="switch"></span>
+          </label>
+        </section>
+
+        <section class="glass-card reminders-card">
+          <div class="reminders-heading"><h2>Reminders</h2><p>Alerts built into your downloaded calendar</p></div>
+
+          <label class="switch-row">
+            <span><strong>Remind me before every event</strong><small>Adds an alert this many minutes before each event</small></span>
+            <input id="reminderEnabled" class="switch-input" type="checkbox" checked />
+            <span class="switch"></span>
+          </label>
+          <div class="number-row" id="reminderMinutesRow">
+            <span>Minutes before</span>
+            <input id="reminderMinutes" class="number-input" type="number" min="0" max="120" value="10" />
+          </div>
+
+          <label class="switch-row">
+            <span><strong>Extra reminder for exams &amp; quizzes</strong><small>An earlier heads-up, in addition to the reminder above</small></span>
+            <input id="examReminderEnabled" class="switch-input" type="checkbox" checked />
+            <span class="switch"></span>
+          </label>
+          <div class="number-row" id="examReminderDaysRow">
+            <span>Days before</span>
+            <input id="examReminderDays" class="number-input" type="number" min="0" max="30" value="7" />
+          </div>
+        </section>
+
+        <button id="openEmojiEditor" class="glass-card emoji-edit-button" type="button">
+          <span id="emojiEditorPreview" class="edit-btn-emoji">📚</span>
+          <span class="edit-btn-copy"><strong>Customize Emojis</strong><small id="emojiEditorSubtext">Classic preset</small></span>
+          <span class="chev">›</span>
+        </button>
+
+        <button id="export" class="primary export-button"><span>Download Calendar</span><small>One .ics file</small></button>
+
+        <div id="status" class="status"></div>
+        <div id="next" class="success-card" hidden>
+          <div class="success-icon">✓</div>
+          <div><strong>Calendar downloaded</strong><p>Import it into a calendar named <strong id="chosenName">Penn Dental</strong>, not your main calendar.</p></div>
+          <button id="openImport" class="secondary" type="button">Open Google Calendar Import</button>
+        </div>
+
+        <div class="footer-actions">
+          <button id="viewTerms" class="linkButton" type="button">Terms of Use</button>
+          <span>•</span>
+          <span>Processed locally</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMOJI EDITOR PAGE -->
+    <div id="emojiPage" class="customization" hidden>
+      <div class="page-header">
+        <button id="backFromEmoji" class="icon-button" type="button" aria-label="Back">‹</button>
+        <div class="page-header-copy"><h2>Customize Emojis</h2><p>Pick a theme, or tap any icon to change it.</p></div>
+        <button id="resetEmojis" class="text-button" type="button">Reset</button>
+      </div>
+
+      <div class="preset-row" role="group" aria-label="Emoji presets">
+        <button class="preset active" data-preset="classic" type="button">Classic</button>
+        <button class="preset" data-preset="academic" type="button">Academic</button>
+        <button class="preset" data-preset="minimal" type="button">Minimal</button>
+        <button class="preset" data-preset="dental" type="button">Dental</button>
+        <button class="preset preset-none" data-preset="none" type="button">No Emoji</button>
+      </div>
+
+      <label class="switch-row glass-card subtle-card">
+        <span><strong>Add QUIZ: / EXAM: text tags</strong><small>Adds a plain-text tag before the title, alongside your emoji</small></span>
+        <input id="textTagsEnabled" class="switch-input" type="checkbox" />
+        <span class="switch"></span>
+      </label>
+
+      <div id="emojiEditor" class="emoji-editor"></div>
+    </div>
+
+    <!-- EMOJI PICKER OVERLAY -->
+    <div id="emojiPicker" class="emoji-picker-overlay" hidden>
+      <div class="emoji-picker-panel">
+        <div class="picker-header">
+          <span>Choose an icon for <strong id="pickerTypeName">Lecture</strong></span>
+          <button id="closePicker" class="icon-button" type="button" aria-label="Close">✕</button>
+        </div>
+        <div id="emojiGrid" class="emoji-grid"></div>
+      </div>
+    </div>
+  </section>
+  <script src="popup.js"></script>
+</body>
+</html>
